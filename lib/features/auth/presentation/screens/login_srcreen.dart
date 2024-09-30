@@ -1,13 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stats_app/features/auth/domain/models/auth_params.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_state.dart';
-import 'package:stats_app/features/auth/domain/models/auth_params.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:stats_app/features/auth/presentation/screens/user_data_screen.dart';
 
-class RegisterScreen extends StatelessWidget {
-  RegisterScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -21,7 +20,7 @@ class RegisterScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Registration',
+                  'Login',
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -39,7 +38,7 @@ class RegisterScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     context.read<AuthBloc>().add(
-                          RegisterEvent(
+                          LoginEvent(
                             AuthParams(
                               email: _emailController.text,
                               password: _passwordController.text,
@@ -47,18 +46,13 @@ class RegisterScreen extends StatelessWidget {
                           ),
                         );
                   },
-                  child: const Text('Sign up'),
+                  child: const Text('Login'),
                 ),
                 const SizedBox(height: 20),
                 BlocListener<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state is AuthSuccess) {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => UserDataScreen()),
-                        (route) => false,
-                      );
+                      Navigator.pushNamed(context, '/data');
                     }
                   },
                   child: BlocBuilder<AuthBloc, AuthState>(
@@ -68,6 +62,7 @@ class RegisterScreen extends StatelessWidget {
                       } else if (state is AuthFailure) {
                         return Text('Помилка: ${state.message}');
                       }
+
                       return Container();
                     },
                   ),
@@ -75,9 +70,9 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 56),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/login');
+                    Navigator.pushReplacementNamed(context, '/register');
                   },
-                  child: const Text('Login'),
+                  child: const Text('Register'),
                 ),
               ],
             ),

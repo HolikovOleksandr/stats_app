@@ -12,7 +12,6 @@ class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
   final User user;
-
   AuthSuccess(this.user);
 
   @override
@@ -21,7 +20,6 @@ class AuthSuccess extends AuthState {
 
 class AuthFailure extends AuthState {
   final String message;
-
   AuthFailure(this.message);
 
   @override

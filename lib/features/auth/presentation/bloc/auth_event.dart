@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:stats_app/features/auth/domain/use_cases/register_use_case.dart';
+import 'package:stats_app/features/auth/domain/models/auth_params.dart';
 
 abstract class AuthEvent extends Equatable {
   @override
@@ -7,9 +7,16 @@ abstract class AuthEvent extends Equatable {
 }
 
 class RegisterEvent extends AuthEvent {
-  final RegisterParams params;
-
+  final AuthParams params;
   RegisterEvent(this.params);
+
+  @override
+  List<Object?> get props => [params];
+}
+
+class LoginEvent extends AuthEvent {
+  final AuthParams params;
+  LoginEvent(this.params);
 
   @override
   List<Object?> get props => [params];

@@ -3,10 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stats_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:stats_app/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:stats_app/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:stats_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:stats_app/firebase_options.dart';
+import 'package:stats_app/routes/app_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +23,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => AuthBloc(
-                RegisterUserUseCase(AuthRepository(FirebaseAuth.instance))))
+          create: (context) => AuthBloc(
+            RegisterUseCase(AuthRepository(FirebaseAuth.instance)),
+            LoginUseCase(AuthRepository(FirebaseAuth.instance)),
+          ),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -31,7 +35,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: RegisterScreen(),
+        onGenerateRoute: AppRoutes.generateRoute,
+        initialRoute: AppRoutes.register,
       ),
     );
   }
