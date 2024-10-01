@@ -25,7 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
       _passwordController.text = 'adminadmin';
     });
     debugPrint(
-        "Admin credentials set: ${_emailController.text}, ${_passwordController.text}");
+      "Admin credentials set: ${_emailController.text}, ${_passwordController.text}",
+    );
   }
 
   @override

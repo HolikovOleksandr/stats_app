@@ -12,6 +12,7 @@ class SplashScreen extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
+          debugPrint('"""""""""""""""""""""""""""""""""""""""');
           Navigator.of(context)
               .pushNamedAndRemoveUntil(AppRoutes.data, (route) => false);
         } else if (state is AuthInitial) {
