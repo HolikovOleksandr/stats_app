@@ -1,5 +1,6 @@
 class AuthParams {
-  final String email, password;
+  final String email;
+  final String password;
 
   AuthParams({
     required this.email,

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:stats_app/features/auth/domain/models/auth_params.dart';
+import 'package:stats_app/core/interfaces/params/auth_params.dart';
 
 abstract class AuthEvent extends Equatable {
   @override
@@ -23,3 +23,5 @@ class LoginEvent extends AuthEvent {
 }
 
 class CheckAuthEvent extends AuthEvent {}
+
+class LogoutEvent extends AuthEvent {}

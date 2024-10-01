@@ -17,7 +17,7 @@ class AppRoutes {
       case data:
         return MaterialPageRoute(builder: (_) => const UserDataScreen());
       case login:
-        return MaterialPageRoute(builder: (_) => LoginScreen());
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       case splash:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
       default:

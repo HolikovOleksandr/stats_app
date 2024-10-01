@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stats_app/features/auth/domain/use_cases/check_auth_use_case.dart';
 import 'package:stats_app/features/auth/domain/use_cases/login_use_case.dart';
+import 'package:stats_app/features/auth/domain/use_cases/logout_use_case.dart';
 import 'package:stats_app/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_state.dart';
@@ -11,15 +12,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final RegisterUseCase registerUseCase;
   final LoginUseCase loginUseCase;
   final CheckAuthUseCase checkAuthUseCase;
+  final LogoutUseCase logoutUseCase;
 
-  AuthBloc(
-    this.registerUseCase,
-    this.loginUseCase,
-    this.checkAuthUseCase,
-  ) : super(AuthInitial()) {
+  AuthBloc(this.registerUseCase, this.loginUseCase, this.checkAuthUseCase,
+      this.logoutUseCase)
+      : super(AuthInitial()) {
     on<RegisterEvent>(_onRegisterEvent);
     on<LoginEvent>(_onLoginEvent);
     on<CheckAuthEvent>(_onCheckAuthEvent);
+    on<LogoutEvent>(_onLogoutEvent);
   }
 
   Future<void> _onRegisterEvent(
@@ -68,6 +69,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           : emit(AuthInitial());
     } catch (e) {
       emit(AuthInitial());
+    }
+  }
+
+  Future<void> _onLogoutEvent(
+      LogoutEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+
+    try {
+      await logoutUseCase.execute(null);
+      emit(AuthInitial());
+    } catch (e) {
+      emit(AuthFailure(e.toString()));
     }
   }
 }
