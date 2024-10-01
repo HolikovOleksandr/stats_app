@@ -2,9 +2,9 @@ import 'package:stats_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:stats_app/features/auth/domain/models/auth_params.dart';
+import 'package:stats_app/routes/app_routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:stats_app/features/auth/presentation/screens/user_data_screen.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
@@ -53,12 +53,7 @@ class RegisterScreen extends StatelessWidget {
                 BlocListener<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state is AuthSuccess) {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => UserDataScreen()),
-                        (route) => false,
-                      );
+                      Navigator.pushNamed(context, AppRoutes.data);
                     }
                   },
                   child: BlocBuilder<AuthBloc, AuthState>(
@@ -75,7 +70,7 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 56),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/login');
+                    Navigator.pushReplacementNamed(context, AppRoutes.login);
                   },
                   child: const Text('Login'),
                 ),

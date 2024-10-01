@@ -4,6 +4,7 @@ import 'package:stats_app/features/auth/domain/models/auth_params.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_state.dart';
+import 'package:stats_app/routes/app_routes.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -52,7 +53,7 @@ class LoginScreen extends StatelessWidget {
                 BlocListener<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state is AuthSuccess) {
-                      Navigator.pushNamed(context, '/data');
+                      Navigator.pushNamed(context, AppRoutes.data);
                     }
                   },
                   child: BlocBuilder<AuthBloc, AuthState>(
@@ -70,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 56),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/register');
+                    Navigator.pushReplacementNamed(context, AppRoutes.register);
                   },
                   child: const Text('Register'),
                 ),

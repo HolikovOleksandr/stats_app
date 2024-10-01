@@ -3,14 +3,26 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stats_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:stats_app/features/auth/domain/use_cases/check_auth_use_case.dart';
 import 'package:stats_app/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:stats_app/features/auth/domain/use_cases/register_use_case.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:stats_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:stats_app/firebase_options.dart';
 import 'package:stats_app/routes/app_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // await dotenv.load(fileName: ".env");
+
+  // await SentryFlutter.init(
+  //   (options) {
+  //     options.dsn = dotenv.env['SENTRY_DSN'];
+  //     options.tracesSampleRate = 1.0;
+  //     options.profilesSampleRate = 1.0;
+  //   },
+  // );
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
@@ -23,11 +35,18 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AuthBloc(
-            RegisterUseCase(AuthRepository(FirebaseAuth.instance)),
-            LoginUseCase(AuthRepository(FirebaseAuth.instance)),
-          ),
-        )
+          create: (context) {
+            final authRepository = AuthRepository(FirebaseAuth.instance);
+            final authBloc = AuthBloc(
+              RegisterUseCase(authRepository),
+              LoginUseCase(authRepository),
+              CheckAuthUseCase(authRepository),
+            );
+
+            authBloc.add(CheckAuthEvent());
+            return authBloc;
+          },
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -36,7 +55,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         onGenerateRoute: AppRoutes.generateRoute,
-        initialRoute: AppRoutes.register,
+        initialRoute: AppRoutes.splash,
       ),
     );
   }

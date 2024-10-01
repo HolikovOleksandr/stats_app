@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,11 +14,18 @@ class UserDataScreen extends StatefulWidget {
 
 class _UserDataScreenState extends State<UserDataScreen> {
   String? token;
+  String? email;
 
   @override
   void initState() {
     super.initState();
     getJwtToken();
+    getEmailFromLocalStorage();
+  }
+
+  Future<void> getEmailFromLocalStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    email = prefs.getString('email');
   }
 
   Future<void> getJwtToken() async {
@@ -45,7 +53,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Email: ${user.email}'),
+                  Text('Email: ${email ?? 'nothing'}'),
                   Text('UID: ${user.uid}'),
                 ],
               );

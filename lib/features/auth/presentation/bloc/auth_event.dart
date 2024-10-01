@@ -21,3 +21,5 @@ class LoginEvent extends AuthEvent {
   @override
   List<Object?> get props => [params];
 }
+
+class CheckAuthEvent extends AuthEvent {}
