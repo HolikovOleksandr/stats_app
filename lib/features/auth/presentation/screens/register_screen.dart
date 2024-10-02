@@ -53,7 +53,6 @@ class RegisterScreen extends StatelessWidget {
                 BlocListener<AuthBloc, AuthState>(
                   listener: (context, state) {
                     if (state is AuthSuccess) {
-                      debugPrint('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                       if (ModalRoute.of(context)?.settings.name !=
                           AppRoutes.data) {
                         Navigator.of(context).pushNamedAndRemoveUntil(
