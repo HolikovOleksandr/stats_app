@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:stats_app/core/interfaces/params/auth_params.dart';
 import 'package:stats_app/features/auth/data/datasources/interfaces/i_auth_local_datasource.dart';
 import 'package:stats_app/features/auth/data/datasources/interfaces/i_auth_remote_datasource.dart';
 import 'package:stats_app/features/auth/domain/repositories/i_auth_repository.dart';
+import 'package:stats_app/core/interfaces/params/auth_params.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ImplAuthRepository implements IAuthRepository {
   final IAuthRemoteDataSource _remoteDataSource;
