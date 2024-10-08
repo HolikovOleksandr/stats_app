@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '638904186507',
     projectId: 'stats-1da68',
     storageBucket: 'stats-1da68.appspot.com',
+    androidClientId: '638904186507-43sbcfpp9kqnjo708agmj5mca13e6b2c.apps.googleusercontent.com',
+    iosClientId: '638904186507-cndgo4fcf71bqj45k38k49r7qgujuubf.apps.googleusercontent.com',
     iosBundleId: 'com.example.statsApp',
   );
 
@@ -72,6 +74,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '638904186507',
     projectId: 'stats-1da68',
     storageBucket: 'stats-1da68.appspot.com',
+    androidClientId: '638904186507-43sbcfpp9kqnjo708agmj5mca13e6b2c.apps.googleusercontent.com',
+    iosClientId: '638904186507-cndgo4fcf71bqj45k38k49r7qgujuubf.apps.googleusercontent.com',
     iosBundleId: 'com.example.statsApp',
   );
 
@@ -83,4 +87,5 @@ class DefaultFirebaseOptions {
     authDomain: 'stats-1da68.firebaseapp.com',
     storageBucket: 'stats-1da68.appspot.com',
   );
+
 }

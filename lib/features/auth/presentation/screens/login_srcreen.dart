@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 import 'package:stats_app/core/interfaces/params/auth_params.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:stats_app/features/auth/presentation/bloc/auth_event.dart';
@@ -51,16 +52,18 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: 64),
-                  Text(
-                    'Login',
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
+                  Text('Login', style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 64),
                   _EmailField(controller: _emailController),
                   const SizedBox(height: 16),
                   _PasswordField(controller: _passwordController),
+                  const Spacer(),
+                  SignInButton(
+                    Buttons.google,
+                    onPressed: () => context.read<AuthBloc>().add(
+                          GoogleLoginEvent(),
+                        ),
+                  ),
                   const Spacer(),
                   _LoginButton(
                     emailController: _emailController,
@@ -69,11 +72,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 20),
                   BlocListener<AuthBloc, AuthState>(
                     listener: (context, state) {
-                      debugPrint("Current AuthState: $state");
-
                       if (state is AuthSuccess) {
-                        Navigator.of(context)
-                            .pushReplacementNamed(AppRoutes.data);
+                        Navigator.of(context).pushReplacementNamed(
+                          AppRoutes.data,
+                        );
                       } else if (state is AuthFailure) {
                         debugPrint("AuthFailure: ${state.message}");
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -88,11 +90,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text('First time? '),
+                      const Text('First time?'),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              AppRoutes.register, (route) => false);
+                          Navigator.of(context).pushReplacementNamed(
+                            AppRoutes.register,
+                          );
                         },
                         child: const Text('Register'),
                       ),
@@ -148,15 +151,16 @@ class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: Theme.of(context).elevatedButtonTheme.style,
       onPressed: () {
         if (Form.of(context).validate()) {
-          context.read<AuthBloc>().add(LoginEvent(
-                AuthParams(
-                  email: emailController.text,
-                  password: passwordController.text,
+          context.read<AuthBloc>().add(
+                LoginEvent(
+                  AuthParams(
+                    email: emailController.text,
+                    password: passwordController.text,
+                  ),
                 ),
-              ));
+              );
         }
       },
       child: const Text('Login'),

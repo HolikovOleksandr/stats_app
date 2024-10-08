@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'interfaces/i_auth_local_datasource.dart';
+import 'i_auth_local_datasource.dart';
 
 class AuthLocalDataSource implements IAuthLocalDataSource {
   final SharedPreferences _prefs;

@@ -6,9 +6,9 @@ class AppTheme {
   static ThemeData get light {
     return ThemeData(
       useMaterial3: true,
-      appBarTheme: _appBar,
+      appBarTheme: _appBar(AppColors.darkText),
       colorScheme: _colorsScheme,
-      elevatedButtonTheme: _elevationButton,
+      elevatedButtonTheme: _elevatedButton,
       scaffoldBackgroundColor: AppColors.lightBackground,
       textTheme: _buildTextTheme(AppColors.darkText),
       inputDecorationTheme: _textInput.copyWith(
@@ -20,13 +20,16 @@ class AppTheme {
   static ThemeData get dark {
     return ThemeData(
       useMaterial3: true,
-      appBarTheme: _appBar,
+      appBarTheme: _appBar(AppColors.lightText),
       colorScheme: _colorsScheme,
-      elevatedButtonTheme: _elevationButton,
+      elevatedButtonTheme: _elevatedButton,
       scaffoldBackgroundColor: AppColors.darkBackground,
       textTheme: _buildTextTheme(AppColors.lightText),
       inputDecorationTheme: _textInput.copyWith(
         fillColor: AppColors.darkInputText,
+        labelStyle: AppFonts.bodyM.copyWith(
+          color: AppColors.white,
+        ),
       ),
     );
   }
@@ -42,21 +45,20 @@ class AppTheme {
 
   static final _textInput = InputDecorationTheme(
     filled: true,
-    labelStyle: AppFonts.bodyM,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
       borderSide: BorderSide.none,
     ),
   );
 
-  static final _elevationButton = ElevatedButtonThemeData(
+  static final _elevatedButton = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       foregroundColor: AppColors.white,
       backgroundColor: AppColors.primary,
       minimumSize: const Size(double.infinity, 52),
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      textStyle: AppFonts.bodyL.copyWith(fontWeight: FontWeight.bold),
+      textStyle: AppFonts.bodyL.copyWith(fontWeight: FontWeight.w900),
     ),
   );
 
@@ -66,10 +68,10 @@ class AppTheme {
     secondary: AppColors.secondary,
   );
 
-  static final _appBar = AppBarTheme(
-    centerTitle: true,
-    titleTextStyle: AppFonts.titleM,
-    color: Colors.transparent,
-    elevation: 0,
-  );
+  static _appBar(color) => AppBarTheme(
+        centerTitle: true,
+        titleTextStyle: AppFonts.titleM.copyWith(color: color),
+        color: Colors.transparent,
+        elevation: 0,
+      );
 }

@@ -12,7 +12,20 @@
           "package_name": "com.example.stats_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "638904186507-43sbcfpp9kqnjo708agmj5mca13e6b2c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.stats_app",
+            "certificate_hash": "434b27f846a844fbf93a2b6c57342ea6ce4ef535"
+          }
+        },
+        {
+          "client_id": "638904186507-dg5cj97aafi5d92c8ppe2rf88u4kvifh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAgIqzlTnHnu_7aplvchmMIWcoamEbbhpQ"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638904186507-dg5cj97aafi5d92c8ppe2rf88u4kvifh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "638904186507-cndgo4fcf71bqj45k38k49r7qgujuubf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.statsApp"
+              }
+            }
+          ]
         }
       }
     }

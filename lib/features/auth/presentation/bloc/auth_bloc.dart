@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stats_app/features/auth/domain/use_cases/check_auth_use_case.dart';
+import 'package:stats_app/features/auth/domain/use_cases/google_login_use_case.dart';
 import 'package:stats_app/features/auth/domain/use_cases/login_use_case.dart';
 import 'package:stats_app/features/auth/domain/use_cases/logout_use_case.dart';
 import 'package:stats_app/features/auth/domain/use_cases/register_use_case.dart';
@@ -13,14 +14,34 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUseCase loginUseCase;
   final CheckAuthUseCase checkAuthUseCase;
   final LogoutUseCase logoutUseCase;
+  final GoogleLoginUseCase googleLoginUseCase;
 
-  AuthBloc(this.registerUseCase, this.loginUseCase, this.checkAuthUseCase,
-      this.logoutUseCase)
-      : super(AuthInitial()) {
+  AuthBloc(
+    this.registerUseCase,
+    this.loginUseCase,
+    this.checkAuthUseCase,
+    this.logoutUseCase,
+    this.googleLoginUseCase,
+  ) : super(AuthInitial()) {
+    on<GoogleLoginEvent>(_onGoogleLoginEvent);
     on<RegisterEvent>(_onRegisterEvent);
     on<LoginEvent>(_onLoginEvent);
     on<CheckAuthEvent>(_onCheckAuthEvent);
     on<LogoutEvent>(_onLogoutEvent);
+  }
+
+  Future<void> _onGoogleLoginEvent(
+      GoogleLoginEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+
+    try {
+      UserCredential userCredential = await googleLoginUseCase.execute(null);
+      emit(AuthSuccess(userCredential.user!));
+      debugPrint(emit.toString());
+    } catch (e) {
+      emit(AuthFailure(e.toString()));
+      debugPrint(emit.toString());
+    }
   }
 
   Future<void> _onRegisterEvent(
@@ -29,10 +50,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     try {
       User user = await registerUseCase.execute(event.params);
-
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('email', event.params.email);
-
       emit(AuthSuccess(user));
     } catch (e) {
       emit(AuthFailure(e.toString()));
@@ -43,15 +60,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
 
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
       User? user = await loginUseCase.execute(event.params);
-
-      if (user != null) {
-        await prefs.setString('email', event.params.email);
-        emit(AuthSuccess(user));
-      } else {
-        emit(AuthFailure('User not found'));
-      }
+      emit(AuthSuccess(user!));
     } catch (e) {
       emit(AuthFailure(e.toString()));
     }
@@ -63,7 +73,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     try {
       User? currentUser = await checkAuthUseCase.execute(null);
-
       currentUser != null
           ? emit(AuthSuccess(currentUser))
           : emit(AuthInitial());
